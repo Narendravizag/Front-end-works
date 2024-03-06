@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Budget App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<style>
+    body {
+        background-color: lightgray;
+    }
+    li{
+        color: maroon;
+        font-size: 25px;
+    }
+</style>
+
+<body>
+    <div class="container mt-4  border border-info shadow rounded-4  " style="background-color: rgb(49, 49, 48);">
+        <h1 class="mx-5 text-center" style="color: whitesmoke;">Budget App</h1>
+        <div class="grid text-center d-flex p-3 gap-5 justify-content-center">
+            <div class="g-col-6 g-col-md-4 p-3   gap-4  text-white rounded-4 " style=" background-color: lightcoral;">
+                <h2>Total Budget</h2>
+                <p id="totalBudgetDisplay">$0.00</p>
+            </div>
+            <div class="g-col-6 g-col-md-4 p-3 bg-success bg-gradien  rounded-4  text-white">
+                <h2>Total Expenses</h2>
+                <p id="totalExpensesDisplay">$0.00</p>
+            </div>
+            <div class="g-col-6 g-col-md-4 p-3  rounded-4  text-white" style="background-color: rgb(132, 177, 235);">
+                <h2>Remaining Balance</h2>
+                <p id="remainingBalanceDisplay">$0.00</p>
+            </div>
+        </div>
+
+        <div class="d-flex gap-5">
+            <div style="margin-left: 240px; " class="col-md-4">
+                <div class="form-group  mt-4">
+                    <label for="totalBudget" style="color: rgb(231, 231, 131);">Total Budget:</label>
+                    <input type="number" id="totalBudget" class="form-control">
+                </div>
+
+                <div class="form-group ">
+                    <label for="expenseName" style="color: rgb(218, 218, 104);">Expense Name:</label>
+                    <input type="text" id="expenseName" class="form-control">
+                </div>
+
+                <div class="form-group ">
+                    <label for="expenseAmount" style="color: rgb(209, 209, 90);">Expense Amount:</label>
+                    <input type="number" id="expenseAmount" class="form-control">
+                </div>
+
+                <br>
+                <button id="addExpense" class="btn btn-outline-light ">Add Expense</button>
+
+            </div>
+
+            <div>
+                <h2 class="mt-4 " style="color: rgb(228, 172, 133);">Expenses</h2>
+                <ol id="expenseList"></ol>
+            </div>
+        </div>
+ <br>
+    </div>
+
+    <script>
+
+        // const totalBudgetInput = document.getElementById("totalBudget");
+        const expenseNameInput = document.getElementById("expenseName");
+        const expenseAmountInput = document.getElementById("expenseAmount");
+        const addExpenseButton = document.getElementById("addExpense");
+
+        const totalBudgetDisplay = document.getElementById("totalBudgetDisplay");
+        const totalExpensesDisplay = document.getElementById("totalExpensesDisplay");
+        const remainingBalanceDisplay = document.getElementById("remainingBalanceDisplay");
+        const expenseList = document.getElementById("expenseList");
+
+        let budget = 0;
+        let expenses = [];
+
+
+
+        function handleBudgetInput() {
+            budget = parseFloat(totalBudget.value);
+            updateBalance();
+        }
+
+        totalBudget.addEventListener("input", handleBudgetInput);
+        addExpenseButton.addEventListener("click", handleAddExpense);
+
+        function handleAddExpense() {
+            const name = expenseNameInput.value;
+            const amount = parseFloat(expenseAmountInput.value);
+
+            if (name && (amount)) {
+                expenses.push({ name, amount });
+                expenseNameInput.value = "";
+                expenseAmountInput.value = "";
+                updateExpensesList();
+                updateBalance();
+            } else {
+                alert("enter")
+            }
+        }
+
+        function updateBalance() {
+            let totalExpenses = 0;
+            for (let i = 0; i < expenses.length; i++) {
+                totalExpenses += expenses[i].amount;
+            }
+
+            let remainingBalance = budget - totalExpenses;
+
+            totalBudgetDisplay.textContent = "$" + budget;
+            totalExpensesDisplay.textContent = "$" + totalExpenses;
+            remainingBalanceDisplay.textContent = "$" + remainingBalance;
+        }
+
+        function updateExpensesList() {
+            expenseList.innerHTML = "";
+            expenses.forEach(expense => {
+                const li = document.createElement("li");
+                li.textContent = expense.name + ": $" + expense.amount;
+                expenseList.appendChild(li);
+            });
+        }
+
+
+
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+</html>
